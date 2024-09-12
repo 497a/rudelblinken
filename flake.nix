@@ -27,6 +27,7 @@
           buildInputs = [
             pkgs.go
             pkgs.steam-run
+            pkgs.linux-wifi-hotspot
           ];
           shellHook = ''
             function wrapProgram() {
