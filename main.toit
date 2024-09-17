@@ -14,11 +14,12 @@ import system.api.containers
 import system.assets
 import system
 import encoding.tison
+import .sync
 // import .communication
 
 INTERVAL ::= Duration --us=100
 
-TARGET-SPEED ::= 200
+TARGET-SPEED ::= 1000
 // Length of a subcycle in us
 speed := TARGET-SPEED
 CYCLE-LENGTH ::= 5000
@@ -46,6 +47,7 @@ main args:
 class Flash:
     sender /string := ""
     ago /int := 0
+    preferred /int := 0
     received-at /int := 0
 
     stringify:
@@ -63,10 +65,15 @@ receiver-task service/espnow.Service:
     datagram := service.receive
     received-data := json.decode datagram.data
     flash := Flash
-    flash.ago = received-data["ago"]
+    flash.ago = received-data["ago"].to-int
+    flash.preferred = received-data["preferred"].to-int
     flash.sender = received-data["sender"]
     flash.received-at = Time.monotonic-us --since-wakeup=true
-    flashes.add flash
+    // flashes.add flash
+    receive-ping
+      flash.sender
+      flash.received-at.to-int - flash.ago.to-int
+      flash.preferred
     print "Receive datagram from \"$datagram.address\", data: \"$flash\""
   
 
@@ -99,41 +106,33 @@ clock-task service/espnow.Service:
     // Profiler.stop
     if cycle-progress >= CYCLE-LENGTH:
       cycle-progress %= CYCLE-LENGTH
-      print "Average delta during last cycle: $(%5d delta-sum / delta-count)us"
+      print "Average adelta during last cycle: $(%5d delta-sum / delta-count)us"
       speed = TARGET-SPEED
       service.send
           json.encode {
             "sender": device-name,
-            "ago": time-delta-after-overflow
+            "ago": time-delta-after-overflow.to-int,
+            "preferred": CYCLE-LENGTH * TARGET-SPEED
           }
           --address=espnow.BROADCAST-ADDRESS
       own-pulse-timestamp := time - time-delta-after-overflow
       own-offset := own-pulse-timestamp % (CYCLE-LENGTH * TARGET-SPEED)
 
-      other-pulse-timestamps := flashes.map: 
-        it.received-at - it.ago
-      // other-pulse-timestamps.add(own-pulse-timestamp)
-      other-offsets := other-pulse-timestamps.map: (it -  own-offset) % (CYCLE-LENGTH * TARGET-SPEED)
-      vectors := other-offsets.map:
-        angle /float := (it * 3.1415 * 2.0) / (CYCLE-LENGTH * TARGET-SPEED * 1.0)
-        [math.cos angle, math.sin angle]
-      vector_sum := vectors.reduce --initial=[0.0001,0]: |acc it|
-        [acc[0] + it[0], acc[1]+it[1]]
-      print "$vector_sum[0]"
-      print "$vector_sum[1]"
-      average-offset-angle := math.atan2
-        vector-sum[1] / (max 1 vectors.size)
-        vector-sum[0] / (max 1 vectors.size)
-      print "$average-offset-angle"
-        
-      average-offset := ((average-offset-angle * (CYCLE-LENGTH * TARGET-SPEED * 1.0) ) / (3.1415 * 2.0)).to-int
-      average-offset = ((CYCLE-LENGTH * TARGET-SPEED) + average-offset) % (CYCLE-LENGTH * TARGET-SPEED)
-      if average-offset > ((CYCLE-LENGTH * TARGET-SPEED) /2):
-        average-offset = 0 - ((CYCLE-LENGTH * TARGET-SPEED) - average-offset)
-      print "average offset $average-offset"
-        
-      flashes.clear
-      speed = speed + ((average-offset * 100) / (CYCLE-LENGTH * TARGET-SPEED))
+      preferred := PeerInformation
+      preferred.estimated-shift = 0
+      preferred.estimated-duration = (CYCLE-LENGTH * TARGET-SPEED)
+      last := PeerInformation
+      last.estimated-shift = 0
+      last.estimated-duration = speed * CYCLE-LENGTH
+
+      sleep INTERVAL
+      next-duration := predict-next-duration preferred last own-pulse-timestamp.to-int
+      // remaining-next-duration := max
+      //   1
+      //   next-duration - time-delta-after-overflow
+      // TODO: Adjust this for remaining-next-duration and compensate for lost time
+      // speed = speed /2 + ((next-duration / CYCLE-LENGTH)/2)
+      speed = next-duration / CYCLE-LENGTH
       
       delta-count = 0
       delta-sum = 0
