@@ -4,9 +4,14 @@
 	(generator_version "8.0")
 	(uuid "adb641c0-c248-42eb-b32f-18abe654a1aa")
 	(paper "A4")
+	(title_block
+		(title "Rudelblinken")
+		(rev "0.1")
+		(company "Zebreus")
+	)
 	(lib_symbols)
 	(sheet
-		(at 5.08 13.97)
+		(at 16.51 27.94)
 		(size 12.7 3.81)
 		(fields_autoplaced yes)
 		(stroke
@@ -18,7 +23,7 @@
 		)
 		(uuid "1abcdbec-5037-4c85-b562-b802d319ca8f")
 		(property "Sheetname" "Sheet_2"
-			(at 5.08 13.2584 0)
+			(at 16.51 27.2284 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -27,7 +32,7 @@
 			)
 		)
 		(property "Sheetfile" "Sheet_2.kicad_sch"
-			(at 5.08 18.3646 0)
+			(at 16.51 32.3346 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -36,7 +41,7 @@
 			)
 		)
 		(instances
-			(project "BackupProjects_lennarteichhorn_personal_1_20240922"
+			(project "rudelblinken"
 				(path "/adb641c0-c248-42eb-b32f-18abe654a1aa"
 					(page "3")
 				)
@@ -44,7 +49,7 @@
 		)
 	)
 	(sheet
-		(at 5.08 5.08)
+		(at 16.51 16.51)
 		(size 12.7 3.81)
 		(fields_autoplaced yes)
 		(stroke
@@ -56,7 +61,7 @@
 		)
 		(uuid "d001b5a2-7e6d-4913-8d0e-2a6605eb52f7")
 		(property "Sheetname" "Sheet_1"
-			(at 5.08 4.3684 0)
+			(at 16.51 15.7984 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -65,7 +70,7 @@
 			)
 		)
 		(property "Sheetfile" "Sheet_1.kicad_sch"
-			(at 5.08 9.4746 0)
+			(at 16.51 20.9046 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -74,7 +79,7 @@
 			)
 		)
 		(instances
-			(project "BackupProjects_lennarteichhorn_personal_1_20240922"
+			(project "rudelblinken"
 				(path "/adb641c0-c248-42eb-b32f-18abe654a1aa"
 					(page "2")
 				)
