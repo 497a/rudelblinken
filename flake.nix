@@ -3,7 +3,7 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
   };
 
   outputs =
@@ -19,6 +19,27 @@
           inherit system;
           config.allowUnfree = true;
         };
+        easyeda2kicad =
+          with pkgs;
+          python3Packages.buildPythonApplication {
+            pname = "easyeda2kicad";
+            version = "0.8.0";
+            pyproject = true;
+
+            src = pkgs.fetchFromGitHub {
+              owner = "uPesy";
+              repo = "easyeda2kicad.py";
+              rev = "b477d9d4dfdb9a030a284a0644cd594b9a02cef0";
+              hash = "sha256-3Nray+gN4yahMddzsk3Hn0yTc/wDcGAGzsUOhvi2TwU=";
+            };
+
+            build-system = with python3Packages; [ setuptools ];
+
+            dependencies = with python3Packages; [
+              pydantic
+              requests
+            ];
+          };
       in
       {
         name = "rudelblinken";
@@ -28,6 +49,9 @@
             pkgs.go
             pkgs.steam-run
             pkgs.linux-wifi-hotspot
+            pkgs.kicad
+            pkgs.python3
+            easyeda2kicad
           ];
           shellHook = ''
             function wrapProgram() {
