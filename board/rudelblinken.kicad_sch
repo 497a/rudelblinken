@@ -1,0 +1,89 @@
+(kicad_sch
+	(version 20231120)
+	(generator "eeschema")
+	(generator_version "8.0")
+	(uuid "adb641c0-c248-42eb-b32f-18abe654a1aa")
+	(paper "A4")
+	(lib_symbols)
+	(sheet
+		(at 5.08 13.97)
+		(size 12.7 3.81)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "1abcdbec-5037-4c85-b562-b802d319ca8f")
+		(property "Sheetname" "Sheet_2"
+			(at 5.08 13.2584 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Sheet_2.kicad_sch"
+			(at 5.08 18.3646 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "BackupProjects_lennarteichhorn_personal_1_20240922"
+				(path "/adb641c0-c248-42eb-b32f-18abe654a1aa"
+					(page "3")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 5.08 5.08)
+		(size 12.7 3.81)
+		(fields_autoplaced yes)
+		(stroke
+			(width 0)
+			(type solid)
+		)
+		(fill
+			(color 0 0 0 0.0000)
+		)
+		(uuid "d001b5a2-7e6d-4913-8d0e-2a6605eb52f7")
+		(property "Sheetname" "Sheet_1"
+			(at 5.08 4.3684 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Sheet_1.kicad_sch"
+			(at 5.08 9.4746 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+			)
+		)
+		(instances
+			(project "BackupProjects_lennarteichhorn_personal_1_20240922"
+				(path "/adb641c0-c248-42eb-b32f-18abe654a1aa"
+					(page "2")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+)
