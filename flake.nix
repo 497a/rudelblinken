@@ -3,7 +3,7 @@
 
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs";
   };
 
   outputs =
@@ -53,6 +53,7 @@
             pkgs.python3
             easyeda2kicad
           ];
+
           shellHook = ''
             function wrapProgram() {
               local directory="$(dirname $1)"
@@ -99,6 +100,9 @@
             else
               echo Make sure that UDP port 1990 is open, otherwise scanning for esp devices wont work
             fi
+
+            # kicad does not work well with wayland and hidpi displays
+            export GDK_BACKEND=x11
           '';
         };
 
