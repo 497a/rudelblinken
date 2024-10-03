@@ -38,6 +38,7 @@ class Cat:
     this.offset = offset
     this.last-pulse-time = pulse-time
 
+MAX-DOM-AGE ::= 10000000
 
 class Firefly:
   name := ?
@@ -53,14 +54,20 @@ class Firefly:
   last-pulse := 0.0
   time := 0
   current-pulse-length /int := ?
+  original-preferred-pulse-length /int := ?
+  dom-age /int := -1
 
   constructor name/string preferred-pulse-length/int:
     this.name = name
     this.preferred-pulse-length = preferred-pulse-length
     current-pulse-length = preferred-pulse-length
-  
+    original-preferred-pulse-length = preferred-pulse-length
+    dom-age = -1
+
   tick delta/int:
     time += delta
+    if dom-age != -1:
+      this.dom-age += delta
     if (pulse-progress + delta) >= current-pulse-length:
       // How much time the pulse was ago
       pulse-ago := (pulse-progress + delta) % current-pulse-length
@@ -68,6 +75,16 @@ class Firefly:
       my-pulse.sender = this.name
       my-pulse.ago = pulse-ago
       my-pulse.counter = 0
+      my-pulse.length = preferred-pulse-length
+
+      // my-pulse.dom = 1
+      // my-pulse.dom-age = 0
+      if  (this.dom-age != -1) and (this.dom-age < MAX-DOM-AGE):
+        my-pulse.dom = 1
+        my-pulse.dom-age = this.dom-age
+      else:
+        this.dom-age = -1
+        this.preferred-pulse-length = original-preferred-pulse-length
       send-pulse my-pulse
       last-pulse = time
       pulse-progress = pulse-progress - current-pulse-length + delta
@@ -94,6 +111,13 @@ class Firefly:
     if (pulse.sender == name):
       // Should never happen in toit
       // return
+    
+    if pulse.dom == 1 and pulse.dom-age != -1 and (this.dom-age == -1 or pulse.dom-age < (this.dom-age - 10000)):
+      preferred-pulse-length = pulse.length
+      this.dom-age = pulse.dom-age
+
+    if pulse.length != preferred-pulse-length:
+      return
 
     sender-cat := cats.get pulse.sender --init=:
       Cat pulse.sender 

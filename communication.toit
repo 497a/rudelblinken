@@ -13,12 +13,20 @@ class Pulse:
   // This field specifies how old the pulse was when it was send
   ago /int := 0
   counter /int := 0
+  // Communicate the own preferred pulse length
+  length /int := 0
+  // If this bit is set, override the preferred pulse length is changed
+  dom /int := 0
+  dom-age /int := -1
 
   stringify:
     return json.stringify {
       "sender": sender,
       "ago": ago,
-      "counter": counter
+      "length": length,
+      "counter": counter,
+      "dom": dom,
+      "dom-age": dom-age
     }
   
   encode:
@@ -26,6 +34,9 @@ class Pulse:
       "sender": this.sender,
       "ago": this.ago,
       "counter": this.counter,
+      "length": this.length,
+      "dom": this.dom,
+      "dom-age": this.dom-age,
       "pulsev1": 1
     }
   
@@ -35,6 +46,10 @@ class Pulse:
     this.ago = received-data["ago"].to-int
     this.counter = received-data["counter"].to-int
     this.sender = received-data["sender"]
+    if received-data.contains "dom":
+      this.dom = received-data.get "dom" --if-absent=: 0
+      this.dom-age = received-data.get "dom-age" --if-absent=: -1
+    this.length = received-data.get "length" --if-absent=: 0
     return true
 
 send-pulse pulse/Pulse:
