@@ -7,4 +7,3 @@ main:
   while true:
     print adc.get
     sleep --ms=100
-  
