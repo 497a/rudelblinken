@@ -18,6 +18,7 @@ import .sync
 import .firefly
 import .communication
 import .led
+import .ambient-light
 
 INTERVAL ::= Duration --us=100
 
@@ -43,7 +44,8 @@ main args:
 
   firefly := Firefly device-name 1000000
   firefly.dampening = 0.95
-
+  task::
+    ambient-light-task
   task::
     receiver-task::
       firefly.receive-pulse it
