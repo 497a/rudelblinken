@@ -56,6 +56,6 @@ main args:
     firefly.tick delta
     brightness := firefly.brightness
     // print brightness
-    set-brightness brightness / 255.0
+    set-brightness (1 + ( math.sin ((brightness * 6.14159) / 255.0)))/2.0
 
     sleep INTERVAL
