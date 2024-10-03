@@ -8,4 +8,4 @@ channel := generator.start pin
 
 set-brightness brightness/float:
   channel.set-duty-factor
-    math.pow brightness 4
+    math.pow brightness.abs 3.2
