@@ -20,17 +20,27 @@ class Pulse:
       "ago": ago,
       "counter": counter
     }
-
+  
+  encode:
+    return json.encode {
+      "sender": this.sender,
+      "ago": this.ago,
+      "counter": this.counter,
+      "pulsev1": 1
+    }
+  
+  decode received-data/Map:
+    if received-data["pulsev1"] != 1:
+      return false
+    this.ago = received-data["ago"].to-int
+    this.counter = received-data["counter"].to-int
+    this.sender = received-data["sender"]
+    return true
 
 send-pulse pulse/Pulse:
   service.send
-    json.encode {
-      "sender": pulse.sender,
-      "ago": pulse.ago,
-      "counter": pulse.counter
-    }
+    pulse.encode
     --address=espnow.BROADCAST-ADDRESS
-
 
 receiver-task on-pulse/Lambda:
   count := 0
@@ -38,11 +48,10 @@ receiver-task on-pulse/Lambda:
     datagram := service.receive
     received-data := json.decode datagram.data
     pulse := Pulse
-    pulse.ago = received-data["ago"].to-int
-    pulse.counter = received-data["counter"].to-int
-    pulse.sender = received-data["sender"]
+    decoded-successfully := pulse.decode received-data
 
-    on-pulse.call pulse
+    if decoded-successfully:
+      on-pulse.call pulse
     
     print "Receive datagram from \"$datagram.address\", data: \"$pulse\""
 
