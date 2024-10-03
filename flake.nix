@@ -27,10 +27,10 @@
             pyproject = true;
 
             src = pkgs.fetchFromGitHub {
-              owner = "uPesy";
+              owner = "zebreus";
               repo = "easyeda2kicad.py";
-              rev = "b477d9d4dfdb9a030a284a0644cd594b9a02cef0";
-              hash = "sha256-3Nray+gN4yahMddzsk3Hn0yTc/wDcGAGzsUOhvi2TwU=";
+              rev = "b4d04d70b804182c7c9b027e9be9b749e0617291";
+              hash = "sha256-a6w6WeT+VJ0jflU66qL0u5Nnoj6zdASqFIWhXTbZTh0=";
             };
 
             build-system = with python3Packages; [ setuptools ];
@@ -71,7 +71,7 @@
             export PATH=~/.cache/hackyJaguarFlake/bin:$PATH
 
             # Install the latest jag via go into the user home
-            go install github.com/toitlang/jaguar/cmd/jag@latest 
+            go install github.com/toitlang/jaguar/cmd/jag@v1.41.0 
 
             # Create a steam-run wrapper in our bin directory
             cat <<EOF > ~/.cache/hackyJaguarFlake/bin/jag
