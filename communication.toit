@@ -60,15 +60,16 @@ send-pulse pulse/Pulse:
 receiver-task on-pulse/Lambda:
   count := 0
   while true:
-    datagram := service.receive
-    received-data := json.decode datagram.data
-    pulse := Pulse
-    decoded-successfully := pulse.decode received-data
+    catch --trace:
+      datagram := service.receive
+      received-data := json.decode datagram.data
+      pulse := Pulse
+      decoded-successfully := pulse.decode received-data
 
-    if decoded-successfully:
-      on-pulse.call pulse
+      if decoded-successfully:
+        on-pulse.call pulse
     
-    print "Receive datagram from \"$datagram.address\", data: \"$pulse\""
+      print "Receive datagram from \"$datagram.address\", data: \"$pulse\""
 
 init-communication:
   service = espnow.Service.station --key=PMK --channel=6
