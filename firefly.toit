@@ -77,14 +77,14 @@ class Firefly:
       my-pulse.counter = 0
       my-pulse.length = preferred-pulse-length
 
-      my-pulse.dom = 1
-      my-pulse.dom-age = 0
-      // if  (this.dom-age != -1) and (this.dom-age < MAX-DOM-AGE):
-      //   my-pulse.dom = 1
-      //   my-pulse.dom-age = this.dom-age
-      // else:
-      //   this.dom-age = -1
-      //   this.preferred-pulse-length = original-preferred-pulse-length
+      // my-pulse.dom = 1
+      // my-pulse.dom-age = 0
+      if  (this.dom-age != -1) and (this.dom-age < MAX-DOM-AGE):
+        my-pulse.dom = 1
+        my-pulse.dom-age = this.dom-age
+      else:
+        this.dom-age = -1
+        this.preferred-pulse-length = original-preferred-pulse-length
       send-pulse my-pulse
       last-pulse = time
       pulse-progress = pulse-progress - current-pulse-length + delta
