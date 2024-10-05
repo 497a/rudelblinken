@@ -6,6 +6,30 @@ Synced blinking catears
 
 Less of a Readme, more a unstructured braindump
 
+## Updating all cat ears nearby
+
+_If builders built buildings the way programmers wrote programs, then the first woodpecker that came along would destroy civilization._ - Gerald Weinberg
+
+Sometimes you may want to update all cat ears. This is the (for now untested) protocol I would use:
+
+1. Make sure you have jaguar version `v1.41.0` installed. Running `nix develop` in this repo will install it for you.
+
+2. Setup an WiFi AP on channel 6 with the SSID: `rudelctrl` and the password `22po7gl334ai`. On linux you can use the following command:
+
+```
+sudo create_ap --freq-band 2.4 -c 6 YOUR_WIFI_DEVICE YOUR_WIFI_DEVICE 'rudelctrl' '22po7gl334ai'
+```
+
+I usually use a second laptop for that.
+
+3. Connect your machine to the AP
+
+4. Make sure UDP port 1990 is open on your machine
+
+5. Turn on your own cat ears and run `jag scan` to verify you can find them and figure out their name. Then try `jag container install rudelblinken main.toit -d NAME_OF_YOUR_CATEARS` to verify that everything works on your device.
+
+6. Run around with your devices like a mad cat and run `make install-all` repeatedly to update all cat ears in range
+
 ## Hardware
 
 rudelblinken is based on ESP32-C3 supermicro boards. Each device controls a single color LED strip. This should keep the hardware setup quite, simple requiring only a esp board, a mosfet, an LED strip and some wires for each node.
