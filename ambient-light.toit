@@ -13,5 +13,6 @@ mean-ambient-brightness /float := 0.0
 
 ambient-light-task:
   while true:
-    sleep --ms=100
-    mean-ambient-brightness = AMBIENT-BRIGHTNESS-DAMPENING * mean-ambient-brightness + (1 - AMBIENT-BRIGHTNESS-DAMPENING)  * ambient-brightness
+    catch --trace:
+      sleep --ms=100
+      mean-ambient-brightness = AMBIENT-BRIGHTNESS-DAMPENING * mean-ambient-brightness + (1 - AMBIENT-BRIGHTNESS-DAMPENING)  * ambient-brightness
