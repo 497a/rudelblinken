@@ -49,9 +49,9 @@
             pkgs.go
             pkgs.steam-run
             pkgs.linux-wifi-hotspot
-            pkgs.kicad
-            pkgs.python3
-            easyeda2kicad
+            #  pkgs.kicad
+            #  pkgs.python3
+            #  easyeda2kicad
           ];
 
           shellHook = ''
